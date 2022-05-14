@@ -52,7 +52,7 @@ class Neo:
     def _delete_roles(tx, orgId):
         try : 
             query = '''
-                    MATCH (r: ROLE {orgId : $orgId}) DELETE r
+                    MATCH (r: ROLE {orgId : $orgId}) DETACH DELETE r
                 '''
             tx.run(query, orgId=orgId)
         except Exception as e:
