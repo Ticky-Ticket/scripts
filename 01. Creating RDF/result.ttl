@@ -1,0 +1,25 @@
+
+"day scholar" "reports to" "bus staff" .
+
+"hosteller" "reports to" "warden" .
+
+"student" "reports to" "proctor",
+        "teacher" .
+
+"bus staff" "reports to" "staff manager" .
+
+"dean" "reports to" "chairman" .
+
+"hod" "reports to" "dean" .
+
+"proctor" "reports to" "parent",
+        "student welfare" .
+
+"student welfare" "reports to" "chairman" .
+
+"teacher" "reports to" "hod" .
+
+"warden" "reports to" "staff manager" .
+
+"staff manager" "reports to" "chairman" .
+
