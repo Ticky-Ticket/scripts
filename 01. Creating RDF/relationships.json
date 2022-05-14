@@ -1,0 +1,102 @@
+{
+    "map": {
+        "0": "reports to",
+        "1": "manages",
+        "2": "communication"
+    },
+    "roles": {
+        "0": "student",
+        "1": "teacher",
+        "2": "hod",
+        "3": "dean",
+        "4": "chairman",
+        "5": "hosteller",
+        "6": "warden",
+        "7": "day scholar",
+        "8": "bus staff",
+        "9": "staff manager",
+        "10": "proctor",
+        "11": "student welfare",
+        "12": "parent"
+    },
+    "triples": [
+        {
+            "subject": "0",
+            "predicate": "0",
+            "object": "1",
+            "description": "student reports to teacher"
+        },
+        {
+            "subject": "1",
+            "predicate": "0",
+            "object": "2",
+            "description": "teacher reports to hod"
+        },
+        {
+            "subject": "2",
+            "predicate": "0",
+            "object": "3",
+            "description": "hod reports to dean"
+        },
+        {
+            "subject": "3",
+            "predicate": "0",
+            "object": "4",
+            "description": "dean reports to chairman"
+        },
+        {
+            "subject": "0",
+            "predicate": "0",
+            "object": "10",
+            "description": "student reports to proctor"
+        },
+        {
+            "subject": "10",
+            "predicate": "0",
+            "object": "11",
+            "description": "proctor reports to student welfare"
+        },
+        {
+            "subject": "10",
+            "predicate": "0",
+            "object": "12",
+            "description": "proctor reports to parents"
+        },
+        {
+            "subject": "11",
+            "predicate": "0",
+            "object": "4",
+            "description": "student welfare reports to chairman"
+        },
+        {
+            "subject": "5",
+            "predicate": "0",
+            "object": "6",
+            "description": "hosteller reports to warden"
+        },
+        {
+            "subject": "6",
+            "predicate": "0",
+            "object": "9",
+            "description": "warder reports to staff manager"
+        },
+        {
+            "subject": "7",
+            "predicate": "0",
+            "object": "8",
+            "description": "day scholar repoerts to bus staff"
+        },
+        {
+            "subject": "8",
+            "predicate": "0",
+            "object": "9",
+            "description": "bus staff reports to staff manager"
+        },
+        {
+            "subject": "9",
+            "predicate": "0",
+            "object": "4",
+            "description": "staff manager reports to chairman"
+        }
+    ]
+}

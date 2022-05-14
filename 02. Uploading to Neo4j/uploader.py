@@ -1,5 +1,4 @@
 from neo4j import GraphDatabase
-from neo4j.exceptions import ServiceUnavailable
 from typing import Dict, List, Tuple
 from colorama import Fore, Style
 import json
@@ -21,9 +20,9 @@ class Neo:
                     session.write_transaction(
                         self._create_role, role, orgId
                     )
-            print(Fore.GREEN+"Successfully created roles"+Style.RESET_ALL)
+            print(Fore.GREEN+f"Successfully created roles for org {orgId}"+Style.RESET_ALL)
         except Exception as e:
-            print(Fore.RED+f"Error : {e}"+Style.RESET_ALL)
+            print(Fore.RED+f"Error creating roles for org {orgId} : {e}"+Style.RESET_ALL)
             raise Exception("DB Error")
 
     @staticmethod
@@ -37,15 +36,40 @@ class Neo:
             print(Fore.RED+f"Error : {e}"+Style.RESET_ALL)
             raise Exception("DB Transaction Error")
     
+    def create_relationships(self, triples, orgId):
+        try:
+            with self.driver.session() as session:
+                for s,_,o in triples:
+                    session.write_transaction(
+                        self._create_relationship, s, o, orgId
+                    )
+            print(Fore.GREEN+f"Successfully created relationships for org {orgId}"+Style.RESET_ALL)
+        except Exception as e:
+            print(Fore.RED+f"Error creating relationships for org {orgId}: {e}"+Style.RESET_ALL)
+            raise Exception("DB Error")
+
+    @staticmethod
+    def _create_relationship(tx, s, o, orgId):
+        try : 
+            query = '''
+                    MATCH (a:ROLE {orgId : $orgId}), (b:ROLE {orgId : $orgId})
+                    WHERE a.name = $junior AND b.name = $senior
+                    CREATE (a)-[r:REPORTS]->(b)
+                '''
+            tx.run(query, junior=s, senior=o, orgId=orgId)
+        except Exception as e:
+            print(Fore.RED+f"Error : {e}"+Style.RESET_ALL)
+            raise Exception("DB Transaction Error")
+    
     def delete_roles(self, orgId):
         try:
             with self.driver.session() as session:
                 session.write_transaction(
                     self._delete_roles, orgId
                 )
-            print(Fore.GREEN+"Successfully deleted roles"+Style.RESET_ALL)
+            print(Fore.GREEN+f"Successfully deleted roles for org {orgId}"+Style.RESET_ALL)
         except Exception as e:
-            print(Fore.RED+f"Error : {e}"+Style.RESET_ALL)
+            print(Fore.RED+f"Error deleting roles for org {orgId} : {e}"+Style.RESET_ALL)
             raise Exception("DB Error")
 
     @staticmethod
@@ -108,9 +132,11 @@ def main() -> None:
             credentials["password"]
         )
         n.create_roles(roles, 1)
+        n.create_relationships(triples, 1)
         n.create_roles(roles, 2)
+        n.create_relationships(triples, 2)
         # n.delete_roles(1)
-        # n.delete_roles(1)
+        # n.delete_roles(2)
         n.close()
         print(Fore.GREEN + "Created Graph in Aura DB successfully" + Style.RESET_ALL)
 
