@@ -1,4 +1,10 @@
+autopep8==1.6.0
+colorama==0.4.4
 isodate==0.6.1
+neo4j==4.4.3
+pycodestyle==2.8.0
 pyparsing==3.0.9
+pytz==2022.1
 rdflib==6.1.1
 six==1.16.0
+toml==0.10.2
