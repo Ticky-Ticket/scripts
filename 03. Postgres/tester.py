@@ -1,5 +1,7 @@
 from config import Settings
 import psycopg2
+import psycopg2.extras
+import pprint
 
 
 class Database : 
@@ -15,9 +17,18 @@ class Database :
             port = s.POSTGRES_PORT
         )
     
+    def processor(self, res) : 
+        l = []
+        for i in res : 
+            d = {}
+            for j in i :
+                d[j] = i.get(j)
+            l.append(d)
+        return l
+    
     def execute(self, query : str, *args) :
         self.connect()
-        curr = self.conn.cursor()
+        curr = self.conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
         if len(args)==0 :
             curr.execute(query)     
         else : 
@@ -27,13 +38,14 @@ class Database :
     
     def fetch(self, query : str, *args) :
         self.connect()
-        curr = self.conn.cursor()
+        curr = self.conn.cursor(cursor_factory = psycopg2.extras.RealDictCursor)
         if len(args)==0 :
             curr.execute(query)     
         else : 
             curr.execute(query, args)
         try : 
             res = curr.fetchall()
+            res = self.processor(res)
         except Exception as e: 
             print(e)
             res = None
@@ -56,6 +68,19 @@ if __name__=="__main__":
             id SERIAL,
             client INTEGER NOT NULL,
             asignee INTEGER NOT NULL ) ''')
-        print("Hello")
-    
+
+        db.execute('''INSERT INTO tickets (client, asignee)
+            VALUES (%s, %s)''', 1, 2)
+        db.execute('''INSERT INTO tickets (client, asignee)
+            VALUES (%s, %s)''', 2, 3)
+        db.execute('''INSERT INTO tickets (client, asignee)
+            VALUES (%s, %s)''', 1, 3)
+        
+        res = db.fetch("SELECT * from tickets")
+        
+        if res : 
+            for r in res : 
+                pprint.pprint(r)
+        else : 
+            print("No result returned") 
     main()
